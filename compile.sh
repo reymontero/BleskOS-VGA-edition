@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir images
+
 nasm -f bin source/bootloader.asm -o images/bootloader.bin
 nasm -f bin source/bleskos.asm -o images/bleskos.bin
 
