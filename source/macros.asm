@@ -22,6 +22,11 @@
  jne .if_%3
 %endmacro
 
+%macro IF_NE 3
+ cmp %1, %2
+ je .if_%3
+%endmacro
+
 %macro ENDIF 1
  .if_%1:
 %endmacro
