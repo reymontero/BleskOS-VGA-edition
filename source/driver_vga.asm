@@ -71,11 +71,11 @@
  mov dl, %2
  int 10h
 
- mov si, %3
+ mov si, .%3
  call print
- jmp string_%3
- %3 db %4, 0
- string_%3:
+ jmp .str_%3
+ .%3: db %4, 0
+ .str_%3:
 %endmacro
 
 %macro PRINT_VAR 3
@@ -127,7 +127,7 @@
 %endmacro
 
 string_print_var db 0, 0, 0, 0, 0
-string_print_hex db 0, 0, 0, 0, 0, 0
+string_print_hex db 0, 0, 0, 0
 
 draw_line:
  mov ah, 0x02
