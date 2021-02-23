@@ -6,6 +6,10 @@
 %define KEY_DOWN 0x50
 %define KEY_LEFT 0x4B
 %define KEY_RIGHT 0x4D
+%define KEY_F1 0x3B
+%define KEY_F2 0x3C
+%define KEY_F3 0x3D
+%define KEY_F4 0x3E
 
 %macro WAIT_FOR_KEYBOARD 0
  mov ah, 0x00
