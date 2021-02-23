@@ -26,3 +26,4 @@ start:
 %include "source/driver_filesystem.asm"
 %include "source/gui_file_dialog.asm"
 %include "source/gui_main_screen.asm"
+%include "source/program_text_editor.asm"
