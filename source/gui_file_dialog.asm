@@ -1,7 +1,9 @@
 ;BleskOS
 
+%define TEXT_FILES_FOLDER 1
+
 file_dialog_first_showed_file dw 0
-file_dialog_selected_file dw 2
+file_dialog_selected_file dw 0
 file_dialog_memory_pointer dw 0
 file_dialog_segment dw 0
 
@@ -41,6 +43,7 @@ file_dialog_draw_files:
  ret
 
 file_dialog_open:
+ pusha
  mov word [disk_packet_segment], 0x2000
  mov ax, 1
  call read_file ;read folder file
@@ -55,6 +58,7 @@ file_dialog_open:
   WAIT_FOR_KEYBOARD
 
   IF ah, KEY_ESC, key_esc
+   popa
    ret
   ENDIF key_esc
 
@@ -79,14 +83,17 @@ file_dialog_open:
   IF ah, KEY_ENTER, key_enter
    mov ax, word [file_dialog_segment]
    mov word [disk_packet_segment], ax
-   mov ax, word [file_dialog_selected_file]
+   mov ax, word [file_dialog_first_showed_file]
+   add ax, word [file_dialog_selected_file]
    add ax, 2 ;to file data
    call read_file
+   popa
    ret
   ENDIF key_enter
  jmp .file_dialog_open_halt
 
 file_dialog_save:
+ pusha
  mov word [disk_packet_segment], 0x2000
  mov ax, 1
  call read_file ;read folder file
@@ -94,7 +101,6 @@ file_dialog_save:
  DRAW_BACKGROUND 0x20
  PRINT 23, 1, str_down_2, '[esc] Back [enter] Save file'
 
- mov word [file_dialog_memory_pointer], 0
  mov word [file_dialog_selected_file], 0
  call file_dialog_draw_files
 
@@ -102,6 +108,7 @@ file_dialog_save:
   WAIT_FOR_KEYBOARD
 
   IF ah, KEY_ESC, key_esc
+   popa
    ret
   ENDIF key_esc
 
@@ -131,7 +138,6 @@ file_dialog_save:
    SHOW_CURSOR
 
    ;set pointer to memory
-   push fs
    mov ax, 0x2000
    mov fs, ax
    mov di, word [file_dialog_memory_pointer]
@@ -144,7 +150,6 @@ file_dialog_save:
     int 10h ;write char on screen
     inc di
    loop .read_file_name
-   pop fs
 
    HIDE_CURSOR
    mov word [disk_packet_segment], 0x2000
@@ -153,9 +158,12 @@ file_dialog_save:
 
    mov ax, word [file_dialog_segment]
    mov word [disk_packet_segment], ax
-   mov ax, word [file_dialog_selected_file]
+   mov ax, word [file_dialog_first_showed_file]
+   add ax, word [file_dialog_selected_file]
    add ax, 2 ;to file data
    call write_file
+
+   popa
    ret
   ENDIF key_enter
  jmp file_dialog_save_halt
@@ -164,5 +172,8 @@ file_dialog_select_folder:
  mov bx, 21
  mul bx
  mov word [file_dialog_first_showed_file], ax
+ mov bx, 16 ;lenght of name of file
+ mul bx
+ mov word [file_dialog_memory_pointer], ax
 
  ret
