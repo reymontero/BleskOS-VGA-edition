@@ -11,14 +11,8 @@ main_screen:
  DRAW_COLUMN 0, 79, 25, 0x40
 
  PRINT 2, 2, str_up, 'Welcome in BleskOS'
-
- mov ax, 0x2000
- mov gs, ax
- mov byte [gs:0], 'A'
- mov byte [gs:16], 'B'
- mov byte [gs:32], 'C'
- 
- call file_dialog_save
+ PRINT 4, 2, str_you_can, 'You can open programs with keyboard:'
+ PRINT 6, 2, str_te, '[a] Text editor'
 
  halt:
   WAIT_FOR_KEYBOARD
