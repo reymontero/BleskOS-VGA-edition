@@ -1,6 +1,7 @@
 ;BleskOS
 
 %define TEXT_FILES_FOLDER 1
+%define GRAPHIC_FILES_FOLDER 2
 
 file_dialog_first_showed_file dw 0
 file_dialog_selected_file dw 0
