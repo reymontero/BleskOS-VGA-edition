@@ -1,4 +1,4 @@
-;BleskOS
+;BleskOS VGA edition
 
 %define TEXT_FILES_FOLDER 1
 %define GRAPHIC_FILES_FOLDER 2
