@@ -129,6 +129,15 @@
 string_print_var db 0, 0, 0, 0, 0
 string_print_hex db 0, 0, 0, 0
 
+init_vga:
+ INB 0x3DA
+ OUTB 0x3C0, 0x30
+ INB 0x3C1
+ and al, 0xF7 ;enable 16 color mode
+ OUTB 0x3C0, al
+
+ ret
+
 draw_line:
  mov ah, 0x02
  mov bh, 0
