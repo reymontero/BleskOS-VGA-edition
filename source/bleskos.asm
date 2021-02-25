@@ -8,6 +8,8 @@ start:
  mov ax, 0x1000
  mov ds, ax
 
+ call init_vga
+
  mov byte [start_drive], dl
  mov byte [drive], dl
 
@@ -27,3 +29,4 @@ start:
 %include "source/gui_file_dialog.asm"
 %include "source/gui_main_screen.asm"
 %include "source/program_text_editor.asm"
+%include "source/program_graphic_editor.asm"
