@@ -13,7 +13,7 @@ main_screen:
  PRINT 2, 2, str_up, 'Welcome in BleskOS'
  PRINT 4, 2, str_you_can, 'You can open programs with keyboard:'
  PRINT 6, 2, str_te, '[a] Text editor'
- PRINT 22, 2, str_down, 'You can shutdown computer with press power button'
+ PRINT 22, 2, str_down, 'You can shutdown computer by pressing power button'
 
  halt:
   WAIT_FOR_KEYBOARD
