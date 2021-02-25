@@ -8,10 +8,10 @@ start:
  mov ax, 0x1000
  mov ds, ax
 
- call init_vga
-
  mov byte [start_drive], dl
  mov byte [drive], dl
+ 
+ call init_vga
 
  call init_mouse
 
