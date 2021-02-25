@@ -6,6 +6,8 @@
 %define KEY_DOWN 0x50
 %define KEY_LEFT 0x4B
 %define KEY_RIGHT 0x4D
+%define KEY_BACKSPACE 0x0E
+%define KEY_DELETE 0x53
 %define KEY_F1 0x3B
 %define KEY_F2 0x3C
 %define KEY_F3 0x3D
