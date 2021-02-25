@@ -28,7 +28,7 @@ text_editor:
  DRAW_LINE 0, 0, 80, 0x40
  PRINT 0, 0, str_up, 'Text editor'
  DRAW_LINE 24, 0, 80, 0x40
- PRINT 24, 0, str_down, '[esc] Back [F1] Open file [F2] Save file]'
+ PRINT 24, 0, str_down, '[esc] Back [F1] Open file [F2] Save file [F3] Erase all'
  call te_draw_text
  SET_CURSOR 1, 0
  SHOW_CURSOR
@@ -55,6 +55,16 @@ text_editor:
    call file_dialog_save
    jmp text_editor
   ENDIF key_f2
+
+  IF ah, KEY_F3, key_f3
+   mov si, 0
+   mov cx, 64000
+   .erase_all:
+    mov byte [gs:si], 0
+    inc si
+   loop .erase_all
+   jmp text_editor
+  ENDIF key_f3
 
   IF ah, KEY_LEFT, key_left
    GET_CURSOR
@@ -113,6 +123,61 @@ text_editor:
    SET_CURSOR dh, dl
    jmp .text_editor_halt
   ENDIF key_down
+
+  IF ah, KEY_BACKSPACE, key_backspace
+   GET_CURSOR
+   IF dl, 0, start_of_line_backspace
+    jmp .text_editor_halt
+   ENDIF start_of_line_backspace
+   dec dl
+   dec di
+   SET_CURSOR dh, dl
+   mov byte [gs:di], 0
+   call te_draw_text
+   jmp .text_editor_halt
+  ENDIF key_backspace
+
+  IF ah, KEY_DELETE, key_delete
+   mov byte [gs:di], 0
+   call te_draw_text
+   jmp .text_editor_halt
+  ENDIF key_delete
+
+  IF ah, KEY_ENTER, key_enter
+   GET_CURSOR
+   IF dh, 23, end_of_screen
+    jmp .text_editor_halt
+   ENDIF end_of_screen
+   push dx
+   mov dh, 0
+   sub di, dx
+   add di, 80
+   pop dx
+   mov dl, 0
+   inc dh
+   SET_CURSOR dh, dl
+
+   mov bx, 64000
+   mov si, 64000-80
+   mov cx, 64000-79
+   sub cx, di
+   .move_chars:
+    mov al, byte [gs:si]
+    mov byte [gs:bx], al
+    dec bx
+    dec si
+   loop .move_chars
+
+   mov si, di
+   mov cx, 80
+   .delete_line:
+    mov byte [gs:si], 0
+    inc si
+   loop .delete_line
+
+   call te_draw_text
+   jmp .text_editor_halt
+  ENDIF key_enter
 
   GET_CURSOR
   cmp dx, 0x1853 ;end of screen
