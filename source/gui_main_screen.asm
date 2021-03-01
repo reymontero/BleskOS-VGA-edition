@@ -14,16 +14,63 @@ main_screen:
  PRINT 4, 2, str_you_can, 'You can open programs with keyboard:'
  PRINT 6, 2, str_te, '[a] Text editor'
  PRINT 8, 2, str_ge, '[b] Graphic editor'
+ PRINT 20, 2, str_dz, '[F1] Developer zone'
  PRINT 22, 2, str_down, 'You can shutdown computer by pressing power button'
 
- halt:
+ .halt:
   WAIT_FOR_KEYBOARD
 
-  IF al, 'a', text_editor
+  IF al, 'a', key_a
    jmp text_editor
-  ENDIF text_editor
+  ENDIF key_a
 
-  IF al, 'b', graphic_editor
+  IF al, 'A', key_A
+   jmp text_editor
+  ENDIF key_A
+
+  IF al, 'b', key_b
    jmp graphic_editor
-  ENDIF graphic_editor
- jmp halt
+  ENDIF key_b
+
+  IF al, 'B', key_B
+   jmp graphic_editor
+  ENDIF key_B
+
+  IF ah, KEY_F1, key_f1
+   jmp developer_zone
+  ENDIF key_f1
+ jmp .halt
+
+developer_zone:
+ DRAW_BACKGROUND 0x60
+
+ DRAW_LINE 0, 0, 80, 0x40
+ DRAW_LINE 24, 0, 80, 0x40
+ DRAW_COLUMN 0, 0, 25, 0x40
+ DRAW_COLUMN 0, 79, 25, 0x40
+
+ PRINT 2, 2, str_up, 'Developer zone'
+ PRINT 4, 2, str_you_can, 'These are programs for BleskOS developers'
+ PRINT 6, 2, str_vga, '[a] VGA'
+ PRINT 8, 2, str_pcspk, '[b] PC speaker'
+ PRINT 10, 2, str_drives, '[c] Drives'
+
+ .halt:
+  WAIT_FOR_KEYBOARD
+
+  IF ah, KEY_ESC, key_esc
+   jmp main_screen
+  ENDIF key_esc
+
+  IF al, 'a', key_a
+   jmp dz_vga
+  ENDIF key_a
+
+  IF al, 'b', key_b
+   jmp dz_pc_speaker
+  ENDIF key_b
+
+  IF al, 'c', key_c
+   jmp dz_drives
+  ENDIF key_c
+ jmp .halt
