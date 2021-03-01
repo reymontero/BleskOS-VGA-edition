@@ -10,7 +10,7 @@ start:
 
  mov byte [start_drive], dl
  mov byte [drive], dl
- 
+
  call init_vga
 
  call init_mouse
@@ -30,3 +30,6 @@ start:
 %include "source/gui_main_screen.asm"
 %include "source/program_text_editor.asm"
 %include "source/program_graphic_editor.asm"
+%include "source/program_dz_vga.asm"
+%include "source/program_dz_pc_speaker.asm"
+%include "source/program_dz_drives.asm"
