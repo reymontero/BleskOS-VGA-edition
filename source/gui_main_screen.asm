@@ -15,6 +15,7 @@ main_screen:
  PRINT 6, 2, str_te, '[a] Text editor'
  PRINT 8, 2, str_ge, '[b] Graphic editor'
  PRINT 10, 2, str_se, '[c] Sound editor'
+ PRINT 12, 2, str_clc, '[d] Calculator'
  PRINT 20, 2, str_dz, '[F1] Developer zone'
  PRINT 22, 2, str_down, 'You can shutdown computer by pressing power button'
 
@@ -32,6 +33,10 @@ main_screen:
   IF ah, KEY_C, key_c
    jmp sound_editor
   ENDIF key_c
+
+  IF ah, KEY_D, key_d
+   jmp calculator
+  ENDIF key_d
 
   IF ah, KEY_F1, key_f1
    jmp developer_zone
