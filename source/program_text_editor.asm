@@ -28,7 +28,7 @@ text_editor:
  DRAW_LINE 0, 0, 80, 0x40
  PRINT 0, 0, str_up, 'Text editor'
  DRAW_LINE 24, 0, 80, 0x40
- PRINT 24, 0, str_down, '[esc] Back [F1] Open file [F2] Save file [F3] Erase all'
+ PRINT 24, 0, str_down, ' F1] Open file [F2] Save file [F3] Erase all'
  call te_draw_text
  SET_CURSOR 1, 0
  SHOW_CURSOR
