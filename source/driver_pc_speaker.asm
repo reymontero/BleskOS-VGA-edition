@@ -24,7 +24,7 @@ play_freq:
 
 stop_freq:
  INB 0x61
- and al, 0x3
+ and al, 0xFC
  OUTB 0x61, al
 
  ret
