@@ -31,6 +31,7 @@ start:
 %include "source/program_text_editor.asm"
 %include "source/program_graphic_editor.asm"
 %include "source/program_sound_editor.asm"
+%include "source/program_calculator.asm"
 %include "source/program_dz_vga.asm"
 %include "source/program_dz_pc_speaker.asm"
 %include "source/program_dz_drives.asm"
