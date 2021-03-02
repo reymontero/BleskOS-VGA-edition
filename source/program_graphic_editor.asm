@@ -44,7 +44,7 @@ graphic_editor:
  DRAW_LINE 0, 0, 80, 0x30
  PRINT 0, 0, str_up, 'Graphic editor'
  DRAW_LINE 24, 0, 80, 0x30
- PRINT 24, 0, str_down, '[esc] Back [F1] Open [F2] Save [F3] Clear screen [space] Pen down'
+ PRINT 24, 0, str_down, '[F1] Open [F2] Save [F3] Clear screen [space] Pen down'
  DRAW_LINE 24, 71, 1, 0x0F
  DRAW_LINE 24, 72, 1, 0x1F
  DRAW_LINE 24, 73, 1, 0x20
