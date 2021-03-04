@@ -28,7 +28,7 @@ text_editor:
  DRAW_LINE 0, 0, 80, 0x40
  PRINT 0, 0, str_up, 'Text editor'
  DRAW_LINE 24, 0, 80, 0x40
- PRINT 24, 0, str_down, ' F1] Open file [F2] Save file [F3] Erase all'
+ PRINT 24, 0, str_down, '[F1] Open file [F2] Save file [F3] Erase all'
  call te_draw_text
  SET_CURSOR 1, 0
  SHOW_CURSOR
@@ -132,13 +132,54 @@ text_editor:
    dec dl
    dec di
    SET_CURSOR dh, dl
-   mov byte [gs:di], 0
+
+   push di
+   push ds
+   push es
+   mov ax, 0x3000
+   mov ds, ax
+   mov es, ax
+   mov si, di
+   inc si
+   GET_CURSOR
+   mov cx, 0
+   mov cl, 80
+   sub cl, dl ;chars to end of line
+   dec cl ;needed here
+
+   cld
+   rep movsb ;move chars
+   mov byte [gs:di], 0 ;delete last char
+   pop es
+   pop ds
+   pop di
+
    call te_draw_text
    jmp .text_editor_halt
   ENDIF key_backspace
 
   IF ah, KEY_DELETE, key_delete
-   mov byte [gs:di], 0
+   push di
+   push ds
+   push es
+   mov ax, 0x3000
+   mov ds, ax
+   mov es, ax
+   mov si, di
+   inc si
+   GET_CURSOR
+   mov cx, 0
+   mov cl, 80
+   sub cl, dl ;chars to end of line
+   dec cl ;needed here
+
+   cld
+   rep movsb ;move chars
+   mov byte [gs:di], 0 ;delete last char
+   pop es
+   pop ds
+   pop di
+
    call te_draw_text
    jmp .text_editor_halt
   ENDIF key_delete
@@ -182,8 +223,35 @@ text_editor:
   GET_CURSOR
   cmp dx, 0x1853 ;end of screen
   je .text_editor_halt
+
+  ;move chars after cursor to end of line
+  push ax
+  push di
+  push ds
+  push es
+  mov ax, 0x3000
+  mov ds, ax
+  mov es, ax
+  GET_CURSOR
+  mov cx, 0
+  mov cl, 80
+  sub cl, dl ;chars to end of line
+  dec cl ;needed here
+  mov si, di
+  add si, cx ;to end of line
+  mov di, si
+  dec si
+
+  std
+  rep movsb ;move chars
+  pop es
+  pop ds
+  pop di
+  pop ax
+
   mov byte [gs:di], al ;write char to memory
   mov ah, 0x0E
-  int 10h ;print to screen
+  int 10h ;move cursor
+  call te_draw_text
   inc di
   jmp .text_editor_halt
