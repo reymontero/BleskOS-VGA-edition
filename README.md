@@ -15,7 +15,8 @@ And contain this programs:
 
 ## Is it working on real computer?
 Yes!
-![8F363B61-495B-43F5-9C25-AE151F5123B1](https://user-images.githubusercontent.com/43180618/109532169-24cec080-7ab9-11eb-8b5e-dfb651705150.jpeg)
+
+![AE882C06-16E1-4AFE-A8A7-D4E1AA1E3A30](https://user-images.githubusercontent.com/43180618/109990554-cc423200-7d09-11eb-9fed-ac7b8d237a66.jpeg)
 
 Hope you will enjoy it!
 
