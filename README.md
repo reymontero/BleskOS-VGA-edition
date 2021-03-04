@@ -16,7 +16,8 @@ And contain this programs:
 ## Is it working on real computer?
 Yes!
 
-![AE882C06-16E1-4AFE-A8A7-D4E1AA1E3A30](https://user-images.githubusercontent.com/43180618/109990554-cc423200-7d09-11eb-9fed-ac7b8d237a66.jpeg)
+![BleskOS-VGA-edition-Alpha-2-computer](https://user-images.githubusercontent.com/43180618/109994500-a9198180-7d0d-11eb-8c18-aaa13cec9a4a.jpg)
+
 
 Hope you will enjoy it!
 
