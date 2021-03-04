@@ -7,25 +7,20 @@ pen_position dw 0
 pen_color db 0
 
 ge_draw_background:
- SET_CURSOR 1, 0
-
  mov ax, 0x4000
  mov gs, ax
+ mov ax, 0xB800
+ mov fs, ax
  mov si, 0
+ mov bx, 160
  mov cx, 1840
  .draw_background:
  push cx
-  mov ah, 0x09
-  mov al, ' '
-  mov bh, 0
-  mov bl, byte [gs:si]
-  mov cx, 1
-  int 10h
-
-  mov ah, 0x0E
-  mov al, ' '
-  int 10h
-
+  mov al, byte [gs:si]
+  mov byte [fs:bx], ' '
+  inc bx
+  mov byte [fs:bx], al
+  inc bx
   inc si
  pop cx
  loop .draw_background
@@ -43,6 +38,8 @@ graphic_editor:
 
  DRAW_LINE 0, 0, 80, 0x30
  PRINT 0, 0, str_up, 'Graphic editor'
+ PRINT 0, 60, str_up_tools, 'Pen is up   Color:'
+ DRAW_PIXEL 0, 79, 0x0F
  DRAW_LINE 24, 0, 80, 0x30
  PRINT 24, 0, str_down, '[F1] Open [F2] Save [F3] Clear screen [space] Pen down'
  DRAW_LINE 24, 71, 1, 0x0F
@@ -202,13 +199,15 @@ graphic_editor:
    push dx
    IF word [pen_position], PEN_UP, if_pen_up
     mov word [pen_position], PEN_DOWN
-    PRINT 24, 61, str_pen_up, 'up  '
+    PRINT 0, 67, str_pen_is_down, 'down'
+    PRINT 24, 50, str_pen_up, 'up  '
     pop dx
     SET_CURSOR dh, dl
     jmp .graphic_editor_halt
    ENDIF if_pen_up
     mov word [pen_position], PEN_UP
-    PRINT 24, 61, str_pen_down, 'down'
+    PRINT 0, 67, str_pen_is_up, 'up  '
+    PRINT 24, 50, str_pen_down, 'down'
     pop dx
     SET_CURSOR dh, dl
     jmp .graphic_editor_halt
@@ -216,41 +215,81 @@ graphic_editor:
 
   IF al, 'a', key_a
    mov byte [pen_color], 0x0F
+   GET_CURSOR
+   push dx
+   DRAW_PIXEL 0, 79, 0x0F
+   pop dx
+   SET_CURSOR dh, dl
    jmp .graphic_editor_halt
   ENDIF key_a
 
   IF al, 'b', key_b
    mov byte [pen_color], 0x1F
+   GET_CURSOR
+   push dx
+   DRAW_PIXEL 0, 79, 0x1F
+   pop dx
+   SET_CURSOR dh, dl
    jmp .graphic_editor_halt
   ENDIF key_b
 
   IF al, 'c', key_c
    mov byte [pen_color], 0x20
+   GET_CURSOR
+   push dx
+   DRAW_PIXEL 0, 79, 0x20
+   pop dx
+   SET_CURSOR dh, dl
    jmp .graphic_editor_halt
   ENDIF key_c
 
   IF al, 'd', key_d
    mov byte [pen_color], 0x30
+   GET_CURSOR
+   push dx
+   DRAW_PIXEL 0, 79, 0x30
+   pop dx
+   SET_CURSOR dh, dl
    jmp .graphic_editor_halt
   ENDIF key_d
 
   IF al, 'e', key_e
    mov byte [pen_color], 0x40
+   GET_CURSOR
+   push dx
+   DRAW_PIXEL 0, 79, 0x40
+   pop dx
+   SET_CURSOR dh, dl
    jmp .graphic_editor_halt
   ENDIF key_e
 
   IF al, 'f', key_f
    mov byte [pen_color], 0x50
+   GET_CURSOR
+   push dx
+   DRAW_PIXEL 0, 79, 0x50
+   pop dx
+   SET_CURSOR dh, dl
    jmp .graphic_editor_halt
   ENDIF key_f
 
   IF al, 'g', key_g
    mov byte [pen_color], 0x60
+   GET_CURSOR
+   push dx
+   DRAW_PIXEL 0, 79, 0x60
+   pop dx
+   SET_CURSOR dh, dl
    jmp .graphic_editor_halt
   ENDIF key_g
 
   IF al, 'h', key_h
    mov byte [pen_color], 0xF0
+   GET_CURSOR
+   push dx
+   DRAW_PIXEL 0, 79, 0xF0
+   pop dx
+   SET_CURSOR dh, dl
    jmp .graphic_editor_halt
   ENDIF key_h
  jmp .graphic_editor_halt
