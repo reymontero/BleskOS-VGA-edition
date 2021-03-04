@@ -15,7 +15,7 @@ file_dialog_draw_files:
  mov es, ax ;folder segment
 
  mov ax, word [file_dialog_first_showed_file]
- mov bx, 16 ;every file name has 16 chars
+ mov bx, 32 ;every file name has 32 chars
  mul bx
  mov bp, ax ;pointer to name of first file
 
@@ -34,11 +34,11 @@ file_dialog_draw_files:
    mov bl, 0x40
   ENDIF selected_line
   inc dh
-  mov cx, 16
+  mov cx, 32
   int 10h
 
   inc dh ;next line
-  add bp, 16 ;next name
+  add bp, 32 ;next name
  pop cx
  loop .print_file_name
 
@@ -119,7 +119,7 @@ file_dialog_save:
     jmp file_dialog_save_halt
    ENDIF up_of_screen
 
-   sub word [file_dialog_memory_pointer], 16
+   sub word [file_dialog_memory_pointer], 32
    dec word [file_dialog_selected_file]
    call file_dialog_draw_files
   ENDIF key_up
@@ -129,29 +129,53 @@ file_dialog_save:
     jmp file_dialog_save_halt
    ENDIF down_of_screen
 
-   add word [file_dialog_memory_pointer], 16
+   add word [file_dialog_memory_pointer], 32
    inc word [file_dialog_selected_file]
    call file_dialog_draw_files
   ENDIF key_down
 
   IF ah, KEY_ENTER, key_enter
-   PRINT 23, 1, name_str, 'Type name(length 16 chars): '
+   PRINT 23, 1, name_str, 'Type name(length 32 chars): '
    SET_CURSOR 23, 29
    SHOW_CURSOR
+
+   ;show actual file name
+   mov ax, 0x2000
+   mov es, ax
+   mov bp, word [file_dialog_memory_pointer]
+   mov ah, 0x13
+   mov al, 0
+   mov bh, 0
+   mov bl, 0x20
+   mov cx, 32
+   mov dh, 23
+   mov dl, 29
+   int 10h
 
    ;set pointer to memory
    mov ax, 0x2000
    mov fs, ax
    mov di, word [file_dialog_memory_pointer]
 
-   mov cx, 16
-   .read_file_name:
+   .write_file_name:
     WAIT_FOR_KEYBOARD
+
+    cmp ah, KEY_ENTER
+    je .end_writing_file_name
+
+    cmp ah, KEY_BACKSPACE
+    je .write_file_name
+
     mov byte [fs:di], al ;write char to memory
     mov ah, 0x0E
     int 10h ;write char on screen
     inc di
-   loop .read_file_name
+
+    GET_CURSOR
+    cmp dl, 61 ;end of file name
+    je .end_writing_file_name
+   jmp .write_file_name
+   .end_writing_file_name:
 
    HIDE_CURSOR
    mov word [disk_packet_segment], 0x2000
@@ -174,7 +198,7 @@ file_dialog_select_folder:
  mov bx, 21
  mul bx
  mov word [file_dialog_first_showed_file], ax
- mov bx, 16 ;lenght of name of file
+ mov bx, 32 ;lenght of name of file
  mul bx
  mov word [file_dialog_memory_pointer], ax
 
