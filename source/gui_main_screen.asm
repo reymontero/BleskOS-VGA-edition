@@ -16,6 +16,7 @@ main_screen:
  PRINT 8, 2, str_ge, '[b] Graphic editor'
  PRINT 10, 2, str_se, '[c] Sound editor'
  PRINT 12, 2, str_clc, '[d] Calculator'
+ PRINT 14, 2, str_goff, '[e] Go out from forest'
  PRINT 20, 2, str_dz, '[F1] Developer zone'
  PRINT 22, 2, str_down, 'You can shutdown computer by pressing power button'
 
@@ -38,6 +39,10 @@ main_screen:
    jmp calculator
   ENDIF key_d
 
+  IF ah, KEY_E, key_e
+   jmp go_out_from_forest
+  ENDIF key_e
+
   IF ah, KEY_F1, key_f1
    jmp developer_zone
   ENDIF key_f1
@@ -56,6 +61,8 @@ developer_zone:
  PRINT 6, 2, str_vga, '[a] VGA'
  PRINT 8, 2, str_pcspk, '[b] PC speaker'
  PRINT 10, 2, str_drives, '[c] Drives'
+ PRINT 12, 2, str_format, '[d] Format FAT16'
+ PRINT 14, 2, str_root_dir, '[e] Root dir FAT16'
 
  .halt:
   WAIT_FOR_KEYBOARD
@@ -64,15 +71,23 @@ developer_zone:
    jmp main_screen
   ENDIF key_esc
 
-  IF al, KEY_A, key_a
+  IF ah, KEY_A, key_a
    jmp dz_vga
   ENDIF key_a
 
-  IF al, KEY_B, key_b
+  IF ah, KEY_B, key_b
    jmp dz_pc_speaker
   ENDIF key_b
 
-  IF al, KEY_C, key_c
+  IF ah, KEY_C, key_c
    jmp dz_drives
   ENDIF key_c
+
+  IF ah, KEY_D, key_d
+   jmp dz_format_fat16
+  ENDIF key_d
+
+  IF ah, KEY_E, key_e
+   jmp dz_root_dir_fat16
+  ENDIF key_e
  jmp .halt

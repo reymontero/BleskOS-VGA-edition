@@ -114,17 +114,11 @@ sound_editor:
   IF ah, KEY_F3, key_f3
    mov si, 0
 
-   mov cx, 80
+   mov cx, 160
    .clear_tones:
     mov byte [gs:si], 0
     inc si
    loop .clear_tones
-
-   mov cx, 80
-   .clear_length:
-    mov byte [gs:si], '1'
-    inc si
-   loop .clear_length
 
    call se_draw_pattern
 
