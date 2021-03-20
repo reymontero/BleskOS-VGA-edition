@@ -32,7 +32,6 @@ start:
 %include "source/program_graphic_editor.asm"
 %include "source/program_sound_editor.asm"
 %include "source/program_calculator.asm"
-%include "source/program_game_go_out_from_forest.asm"
 %include "source/program_dz_vga.asm"
 %include "source/program_dz_pc_speaker.asm"
 %include "source/program_dz_drives.asm"
